@@ -41,6 +41,7 @@ FW_DIR:phyboard-rigel-am67xx-1 = "${PLAT_SFX}/vision_apps_eaik"
 
 INSTALL_FW_DIR:edgeai = "${nonarch_base_libdir}/firmware/vision_apps_eaik/"
 INSTALL_FW_DIR:adas = "${nonarch_base_libdir}/firmware/vision_apps_evm/"
+INSTALL_FW_DIR:phyboard-rigel-am67xx-1 = "${nonarch_base_libdir}/firmware/vision_apps_eaik/"
 
 MCU_1_0_FW = "vx_app_rtos_linux_mcu1_0.out"
 MCU_1_1_FW = "vx_app_rtos_linux_mcu1_1.out"
