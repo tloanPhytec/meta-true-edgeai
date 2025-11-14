@@ -3,7 +3,7 @@ SUMMARY = "TI RTOS prebuilt binary firmware images for EdgeAI"
 LICENSE = "TI-TFL"
 LIC_FILES_CHKSUM = "file://${COREBASE}/../meta-ti/meta-ti-bsp/licenses/TI-TFL;md5=a1b59cb7ba626b9dbbcbf00f3fbc438a"
 
-COMPATIBLE_MACHINE = "j721e|j721s2|j784s4|j722s|j742s2|am62axx"
+COMPATIBLE_MACHINE = "j721e|j721s2|j784s4|j722s|j742s2|am62axx|phyboard-rigel-am67xx-1"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -19,6 +19,7 @@ PLAT_SFX:j784s4 = "j784s4"
 PLAT_SFX:j722s = "j722s"
 PLAT_SFX:j742s2 = "j742s2"
 PLAT_SFX:am62axx = "am62a"
+PLAT_SFX:phyboard-rigel-am67xx-1 = "j722s"
 
 SRCREV = "a514fa172b77d21e3f44956bd7e0c79737f86e82"
 BRANCH = "main"
@@ -62,6 +63,7 @@ FW_LIST:j784s4 =    "              ${MCU_1_1_FW} ${MCU_2_0_FW} ${MCU_2_1_FW} ${M
 FW_LIST:j742s2 =    "                            ${MCU_2_0_FW} ${MCU_2_1_FW} ${MCU_3_0_FW} ${MCU_3_1_FW} ${MCU_4_0_FW} ${MCU_4_1_FW}                         ${C7X_1_FW} ${C7X_2_FW} ${C7X_3_FW}"
 FW_LIST:j722s =     "                            ${MCU_2_0_FW}                                                                                               ${C7X_1_FW} ${C7X_2_FW}"
 FW_LIST:am62axx =   "${MCU_1_0_FW}                                                                                                                           ${C7X_1_FW}"
+FW_LIST:phyboard-rigel-am67xx-1 =     "          ${MCU_2_0_FW}                                                                                               ${C7X_1_FW} ${C7X_2_FW}"
 
 do_install() {
     # Sign the firmware
@@ -188,6 +190,15 @@ ALTERNATIVE:${PN}:j722s = "\
 ALTERNATIVE:${PN}:am62axx = "\
                     am62a-c71_0-fw \
                     am62a-c71_0-fw-sec \
+                    "
+
+ALTERNATIVE:${PN}:phyboard-rigel-am67xx-1 = "\
+                    j722s-main-r5f0_0-fw \
+                    j722s-c71_0-fw \
+                    j722s-c71_1-fw \
+                    j722s-main-r5f0_0-fw-sec \
+                    j722s-c71_0-fw-sec \
+                    j722s-c71_1-fw-sec \
                     "
 
 # Set up link names for the firmwares
