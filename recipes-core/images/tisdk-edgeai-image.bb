@@ -56,3 +56,9 @@ IMAGE_INSTALL += "\
 	${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)} \
 	${EDGEAI_STACK} \
 "
+
+# Nice-to-haves for development
+IMAGE_INSTALL:append = " packagegroup-core-buildessential cmake git meson ninja sudo pkgconfig python3-pip ffmpeg"
+
+PACKAGECONFIG:append:pn-ffmpeg = " gpl x264 x265"
+LICENSE_FLAGS_ACCEPTED += "commercial"
