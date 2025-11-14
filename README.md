@@ -27,6 +27,10 @@ To add this layer to your existing BSP-Yocto-Ampliphy-AM67x-PD25.1.0:
   bitbake-layers add-layer ../sources/meta-true-edgeai
   bitbake-layers add-layer ../sources/meta-true-edgeai/meta-qt5
   ```
+* Enable opencv in the DISTRO_FEATURES:
+  ```sh
+  echo "DISTRO_FEATURES:append = \" opencv\"" >> $BUILDDIR/conf/local.conf
+  ```
 * Build the image:
   ```sh
   MACHINE=phyboard-rigel-am67xx-1 bitbake tisdk-edgeai-image
