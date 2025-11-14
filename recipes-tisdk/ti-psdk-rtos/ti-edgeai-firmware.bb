@@ -37,6 +37,7 @@ inherit ti-secdev
 
 FW_DIR:edgeai = "${PLAT_SFX}/vision_apps_eaik"
 FW_DIR:adas = "${PLAT_SFX}/vision_apps_evm"
+FW_DIR:phyboard-rigel-am67xx-1 = "${PLAT_SFX}/vision_apps_eaik"
 
 INSTALL_FW_DIR:edgeai = "${nonarch_base_libdir}/firmware/vision_apps_eaik/"
 INSTALL_FW_DIR:adas = "${nonarch_base_libdir}/firmware/vision_apps_evm/"
