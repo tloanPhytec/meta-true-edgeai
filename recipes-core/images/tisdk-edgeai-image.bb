@@ -35,6 +35,20 @@ EDGEAI_STACK = " \
 	edgeai-studio-agent \
 	packagegroup-edgeai-tisdk-addons \
 	resize-rootfs \
+	ntp \
+	kms++ \
+	qtbase-conf \
+	qtquickcontrols-qmlplugins \
+	qtquickcontrols2 \
+	qtquickcontrols2-plugins \
+	qtquickcontrols2-qmlplugins \
+	qtgraphicaleffects-qmlplugins \
+	qtquick3d \
+	qtquick3d-plugins \
+	qtquick3d-qmlplugins \
+	qtscript \
+	qtscript-plugins \
+	qtscript-qmlplugins \
 "
 # omiiting for now:
 # packagegroup-arago-gst-sdk-target \
