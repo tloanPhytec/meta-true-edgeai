@@ -37,14 +37,16 @@ PLAT_SOC:j784s4 = "j784s4"
 PLAT_SOC:j722s = "j722s"
 PLAT_SOC:j742s2 = "j742s2"
 PLAT_SOC:am62axx = "am62a"
+PLAT_SOC:phyboard-rigel-am67xx-1 = "j722s"
 
 CPU = "A72"
 CPU:am62axx = "A53"
 CPU:j722s = "A53"
+CPU:phyboard-rigel-am67xx-1 = "A53"
 
 DEPENDS += "ti-vision-apps"
 
-COMPATIBLE_MACHINE = "j721e|j721s2|j784s4|j722s|j742s2|am62axx"
+COMPATIBLE_MACHINE = "j721e|j721s2|j784s4|j722s|j742s2|am62axxi|phyboard-rigel-am67xx-1"
 
 export TARGET_FS = "${WORKDIR}/recipe-sysroot"
 
@@ -69,7 +71,7 @@ do_compile() {
     TIDL_PROTOBUF_PATH=${S}/protobuf-3.21.12 \
     GCC_LINUX_ARM_ROOT= \
     TARGET_SOC=${PLAT_SOC} \
-    CROSS_COMPILE_LINARO=aarch64-oe-linux- \
+    CROSS_COMPILE_LINARO=${TARGET_PREFIX} \
     LINUX_SYSROOT_ARM=${STAGING_DIR_TARGET} \
     TREAT_WARNINGS_AS_ERROR=0 \
     oe_runmake
@@ -86,6 +88,7 @@ TIDL_SOC_NAME:j784s4 = "J784S4"
 TIDL_SOC_NAME:j722s = "J722S"
 TIDL_SOC_NAME:j742s2 = "J742S2"
 TIDL_SOC_NAME:am62axx = "AM62A"
+TIDL_SOC_NAME:phyboard-rigel-am67xx-1 = "J722S"
 
 do_install() {
     install -d ${LIB_DST_DIR}

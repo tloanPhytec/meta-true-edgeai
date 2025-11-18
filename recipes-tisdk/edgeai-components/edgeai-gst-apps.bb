@@ -18,6 +18,10 @@ PLAT_SOC:j722s = "j722s"
 PLAT_SOC:am62axx = "am62a"
 PLAT_SOC:am62xx = "am62x"
 PLAT_SOC:am62pxx = "am62p"
+PLAT_SOC:phyboard-rigel-am67xx-1 = "j722s"
+
+CFLAGS:append = " -Wno-error=format-security"
+CXXFLAGS:append = " -Wno-error=format-security"
 
 S = "${WORKDIR}/git/apps_cpp"
 
@@ -29,7 +33,7 @@ RDEPENDS:${PN} += "edgeai-gst-plugins edgeai-dl-inferer-staticdev"
 
 RDEPENDS:${PN}-source += "bash python3-core edgeai-dl-inferer-dev python3-yamlloader python3-numpy opencv cmake dialog"
 
-COMPATIBLE_MACHINE = "j721e|j721s2|j784s4|j722s|am62axx|am62xx|am62pxx"
+COMPATIBLE_MACHINE = "j721e|j721s2|j784s4|j722s|am62axx|am62xx|am62pxx|phyboard-rigel-am67xx-1"
 
 export SOC = "${PLAT_SOC}"
 
