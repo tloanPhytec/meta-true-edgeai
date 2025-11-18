@@ -33,15 +33,6 @@ case "$1" in
             echo "Starting edgeai-gui-app..."
             start_gui
         fi
-        # Wait for network to come up, Set time
-        for i in `seq 1 3`; do
-            timeout 10 ntpd -s
-            if [ $? -eq 0 ]; then
-                echo "ntpd successful"
-                break
-            fi
-        done
-        killall ntpd || true
     ;;
     stop )
         if [ $ENABLE_GUI -eq 1 ]; then
