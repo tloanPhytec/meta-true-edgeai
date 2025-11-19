@@ -27,9 +27,12 @@ To add this layer to your existing BSP-Yocto-Ampliphy-AM67x-PD25.1.0:
   bitbake-layers add-layer ../sources/meta-true-edgeai
   bitbake-layers add-layer ../sources/meta-true-edgeai/meta-qt5
   ```
-* Enable opencv in the DISTRO_FEATURES:
+* Run the following to modify the build configuration:
   ```sh
   echo "DISTRO_FEATURES:append = \" opencv\"" >> $BUILDDIR/conf/local.conf
+  echo "SETUPTOOLS_SCM_PRETEND_VERSION= \"1.9.0\"" >> $BUILDDIR/conf/local.conf
+  echo "PACKAGECONFIG_GL:append:pn-qtbase = \" linuxfb\"" >> $BUILDDIR/conf/local.conf
+  echo "PACKAGECONFIG_FONTS:pn-qtbase = \"fontconfig\"" >> $BUILDDIR/conf/local.conf
   ```
 * Build the image:
   ```sh
