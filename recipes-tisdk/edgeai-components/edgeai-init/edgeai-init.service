@@ -1,5 +1,7 @@
 [Unit]
 Description=EdgeAI OOB demos
+After=weston.service
+Wants=weston.service
 
 [Service]
 Environment="XDG_RUNTIME_DIR=/run/user/0"
@@ -9,6 +11,7 @@ TimeoutSec=60
 IgnoreSIGPIPE=no
 KillMode=process
 GuessMainPID=no
+ExecStartPre=-/etc/init.d/edgeai-launcher.sh kill_weston
 ExecStart=/etc/init.d/edgeai-launcher.sh start
 ExecStopPost=/etc/init.d/edgeai-launcher.sh stop
 StandardOutput=journal
