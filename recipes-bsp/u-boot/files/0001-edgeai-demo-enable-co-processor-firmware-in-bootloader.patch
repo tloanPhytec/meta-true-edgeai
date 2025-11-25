@@ -1,0 +1,72 @@
+From 5736eeee3fe3ca4a16ad2925bf9167e020a1ec91 Mon Sep 17 00:00:00 2001
+From: tloan <tloan@phytec.com>
+Date: Thu, 20 Nov 2025 18:53:13 +0000
+Subject: [PATCH] edgeai demo: enable co-processor firmware in the bootloader
+
+- firmware must be started in bootloader to prevent the kernel from dynamically assigning its own virtio channels
+
+Signed-off-by: tloan <tloan@phytec.com>
+---
+ board/phytec/phycore_am67x/phycore_am67x.env | 35 ++++++++++++++++++++
+ configs/phycore_am67x_a53_defconfig          |  2 +-
+ 2 files changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/board/phytec/phycore_am67x/phycore_am67x.env b/board/phytec/phycore_am67x/phycore_am67x.env
+index 0b3bf1aff4f..6c94b121d5c 100644
+--- a/board/phytec/phycore_am67x/phycore_am67x.env
++++ b/board/phytec/phycore_am67x/phycore_am67x.env
+@@ -28,3 +28,38 @@ bootmeths=rauc script efi extlinux pxe
+ bootmeths=script efi extlinux pxe
+ #endif
+ boot_targets=mmc1 mmc0 spi_flash dhcp
++
++boot_rprocs=
++	if test ${dorprocboot} -eq 1 && test ${boot} = mmc; then
++		rproc init;
++		run boot_rprocs_mmc;
++	fi;
++boot_rprocs_mmc=
++	env set rproc_id;
++	env set rproc_fw;
++	env set secure_suffix;
++
++	if test ${secure_rprocs} -eq 1; then
++		env set secure_suffix -sec;
++	fi;
++
++	for i in ${rproc_fw_binaries} ; do
++		if test -z "${rproc_id}" ; then
++			env set rproc_id $i;
++		else
++			env set rproc_fw $i${secure_suffix};
++			run rproc_load_and_boot_one;
++			env set rproc_id;
++			env set rproc_fw;
++		fi;
++	done
++dorprocboot=1
++secure_rprocs=0
++bootpart=1:2
++rproc_load_and_boot_one=
++	if load mmc ${bootpart} $loadaddr ${rproc_fw}; then
++		if rproc load ${rproc_id} ${loadaddr} ${filesize}; then
++			rproc start ${rproc_id};
++			fi;
++	fi;
++rproc_fw_binaries= 0 /lib/firmware/j722s-mcu-r5f0_0-fw 2 /lib/firmware/j722s-main-r5f0_0-fw 3 /lib/firmware/j722s-c71_0-fw 4 /lib/firmware/j722s-c71_1-fw
+diff --git a/configs/phycore_am67x_a53_defconfig b/configs/phycore_am67x_a53_defconfig
+index acfad2dcb0f..f05fd70698d 100644
+--- a/configs/phycore_am67x_a53_defconfig
++++ b/configs/phycore_am67x_a53_defconfig
+@@ -38,7 +38,7 @@ CONFIG_SPL_SPI=y
+ CONFIG_SPL_LOAD_FIT=y
+ CONFIG_SPL_LOAD_FIT_ADDRESS=0x81000000
+ CONFIG_BOOTSTD_FULL=y
+-CONFIG_BOOTCOMMAND="bootflow scan -lb"
++CONFIG_BOOTCOMMAND="run boot_rprocs; bootflow scan -lb"
+ CONFIG_DEFAULT_FDT_FILE="oftree"
+ CONFIG_BOARD_LATE_INIT=y
+ CONFIG_BLOBLIST=y
+-- 
+2.34.1
+
