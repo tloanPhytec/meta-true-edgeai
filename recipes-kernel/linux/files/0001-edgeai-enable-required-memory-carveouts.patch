@@ -1,0 +1,204 @@
+From 0c0b116d7ff97fc7ab66821e1b3d22f4209b1437 Mon Sep 17 00:00:00 2001
+From: tloan <tloan@phytec.com>
+Date: Thu, 20 Nov 2025 19:02:01 +0000
+Subject: [PATCH] edgeai: enable required memory carveouts for edgeai demo
+ firmware
+
+Signed-off-by: tloan <tloan@phytec.com>
+---
+ .../boot/dts/ti/k3-am67-phycore-som.dtsi      | 95 +++++++++++--------
+ 1 file changed, 54 insertions(+), 41 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/ti/k3-am67-phycore-som.dtsi b/arch/arm64/boot/dts/ti/k3-am67-phycore-som.dtsi
+index e5067219e63e..9401604e9124 100644
+--- a/arch/arm64/boot/dts/ti/k3-am67-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am67-phycore-som.dtsi
+@@ -35,88 +35,101 @@ reserved_memory: reserved-memory {
+ 		#size-cells = <2>;
+ 		ranges;
+ 
+-		linux,cma {
++		vision_apps_wkup_r5fss0_core0_dma_memory_region: vision-apps-r5f-dma-memory@a0000000 {
+ 			compatible = "shared-dma-pool";
+-			reusable;
+-			size = <0x00 0x38000000>;
+-			linux,cma-default;
++			reg = <0x00 0xa0000000 0x00 0x00100000>;
++			no-map;
+ 		};
+ 
+-		secure_tfa_ddr: tfa@9e780000 {
+-			reg = <0x00 0x9e780000 0x00 0x80000>;
++		vision_apps_wkup_r5fss0_core0_memory_region: vision-apps-r5f-memory@a0100000 {
++			compatible = "shared-dma-pool";
++			reg = <0x00 0xa0100000 0x00 0x00f00000>;
+ 			no-map;
+ 		};
+ 
+-		secure_ddr: optee@9e800000 {
+-			reg = <0x00 0x9e800000 0x00 0x01800000>;
++		vision_apps_mcu_r5fss0_core0_dma_memory_region: vision-apps-r5f-dma-memory@a1000000 {
++			compatible = "shared-dma-pool";
++			reg = <0x00 0xa1000000 0x00 0x00100000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
++		vision_apps_mcu_r5fss0_core0_memory_region: vision-apps-r5f-memory@a1100000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa0000000 0x00 0x100000>;
++			reg = <0x00 0xa1100000 0x00 0x00f00000>;
+ 			no-map;
+ 		};
+ 
+-		wkup_r5fss0_core0_memory_region: r5f-memory@a0100000 {
++		vision_apps_main_r5fss0_core0_dma_memory_region: vision-apps-r5f-dma-memory@a2000000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa0100000 0x00 0xf00000>;
++			reg = <0x00 0xa2000000 0x00 0x00100000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_dma_memory_region: mcu-r5fss-dma-memory-region@a1000000 {
++		vision_apps_main_r5fss0_core0_memory_region: vision-apps-r5f-memory@a2100000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa1000000 0x00 0x100000>;
++			reg = <0x00 0xa2100000 0x00 0x01f00000>;
+ 			no-map;
+ 		};
+ 
+-		mcu_r5fss0_core0_memory_region: mcu-r5fss-memory-region@a1100000 {
++		vision_apps_rtos_ipc_memory_region: vision-apps-rtos-ipc-memory-region@a5000000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa1100000 0x00 0xf00000>;
++			reg = <0x00 0xa5000000 0x00 0x02000000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_dma_memory_region: main-r5fss-dma-memory-region@a2000000 {
++		vision_apps_memory_region: vision-apps-dma-memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa2000000 0x00 0x100000>;
++			reg = <0x00 0xa7000000 0x00 0x06000000>;
+ 			no-map;
+ 		};
+ 
+-		main_r5fss0_core0_memory_region: main-r5fss-memory-region@a2100000 {
++		vision_apps_c71_0_dma_memory_region: vision-apps-c71-dma-memory@ad000000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa2100000 0x00 0xf00000>;
++			reg = <0x00 0xad000000 0x00 0x00100000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_0_dma_memory_region: c7x-dma-memory@a3000000 {
++		vision_apps_c71_0_memory_region: vision-apps-c71_0-memory@ad100000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa3000000 0x00 0x100000>;
++			reg = <0x00 0xad100000 0x00 0x03f00000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_0_memory_region: c7x-memory@a3100000 {
++		vision_apps_c71_1_dma_memory_region: vision-apps-c71_1-dma-memory@b1000000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa3100000 0x00 0xf00000>;
++			reg = <0x00 0xb1000000 0x00 0x00100000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_1_dma_memory_region: c7x-dma-memory@a4000000 {
++		vision_apps_c71_1_memory_region: vision-apps-c71_1-memory@b1100000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa4000000 0x00 0x100000>;
++			reg = <0x00 0xb1100000 0x00 0x03f00000>;
+ 			no-map;
+ 		};
+ 
+-		c7x_1_memory_region: c7x-memory@a4100000 {
++		vision_apps_core_heaps_lo: vision-apps-core-heap-memory-lo@b5000000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa4100000 0x00 0xf00000>;
++			reg = <0x00 0xb5000000 0x00 0x02800000>;
+ 			no-map;
+ 		};
+ 
+-		rtos_ipc_memory_region: ipc-memories@a5000000 {
+-			reg = <0x00 0xa5000000 0x00 0x1c00000>;
+-			alignment = <0x1000>;
++		c7x_ddr_heaps_hi: c7x-ddr-heaps-hi@880000000 {
++			compatible = "shared-dma-pool";
++			reg = <0x08 0x80000000 0x00 0x20000000>;
+ 			no-map;
+ 		};
++
++		vision_apps_shared_region: vision_apps_shared-memories {
++			compatible = "dma-heap-carveout";
++			reg = <0x09 0x00000000 0x00 0x20000000>;
++		};
++
++		linux_cma_region: linux-cma-buffers@980000000 {
++			compatible = "shared-dma-pool";
++			reusable;
++			reg = <0x09 0x80000000 0x00 0x38000000>;
++			linux,cma-default;
++		};
+ 	};
+ 
+ 	vcc_5v0_som: regulator-vcc-5v0-som {
+@@ -254,15 +267,15 @@ &cpsw_port2 {
+ 
+ &c7x_0 {
+ 	mboxes = <&mailbox0_cluster2 &mbox_c7x_0>;
+-	memory-region = <&c7x_0_dma_memory_region>,
+-			<&c7x_0_memory_region>;
++		memory-region = <&vision_apps_c71_0_dma_memory_region>,
++			<&vision_apps_c71_0_memory_region>;
+ 	status = "okay";
+ };
+ 
+ &c7x_1 {
+ 	mboxes = <&mailbox0_cluster3 &mbox_c7x_1>;
+-	memory-region = <&c7x_1_dma_memory_region>,
+-			<&c7x_1_memory_region>;
++	memory-region = <&vision_apps_c71_1_dma_memory_region>,
++			<&vision_apps_c71_1_memory_region>;
+ 	status = "okay";
+ };
+ 
+@@ -325,8 +338,8 @@ &wkup_r5fss0 {
+ 
+ &wkup_r5fss0_core0 {
+ 	mboxes = <&mailbox0_cluster0 &mbox_wkup_r5_0>;
+-	memory-region = <&wkup_r5fss0_core0_dma_memory_region>,
+-			<&wkup_r5fss0_core0_memory_region>;
++	memory-region = <&vision_apps_wkup_r5fss0_core0_dma_memory_region>,
++			<&vision_apps_wkup_r5fss0_core0_memory_region>;
+ };
+ 
+ &mcu_r5fss0 {
+@@ -335,8 +348,8 @@ &mcu_r5fss0 {
+ 
+ &mcu_r5fss0_core0 {
+ 	mboxes = <&mailbox0_cluster1 &mbox_mcu_r5_0>;
+-	memory-region = <&mcu_r5fss0_core0_dma_memory_region>,
+-			<&mcu_r5fss0_core0_memory_region>;
++	memory-region = <&vision_apps_mcu_r5fss0_core0_dma_memory_region>,
++			<&vision_apps_mcu_r5fss0_core0_memory_region>;
+ };
+ 
+ &main_r5fss0 {
+@@ -345,8 +358,8 @@ &main_r5fss0 {
+ 
+ &main_r5fss0_core0 {
+ 	mboxes = <&mailbox0_cluster3 &mbox_main_r5_0>;
+-	memory-region = <&main_r5fss0_core0_dma_memory_region>,
+-			<&main_r5fss0_core0_memory_region>;
++	memory-region = <&vision_apps_main_r5fss0_core0_dma_memory_region>,
++			<&vision_apps_main_r5fss0_core0_memory_region>;
+ };
+ 
+ &ospi0 {
+-- 
+2.34.1
+
